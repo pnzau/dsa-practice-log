@@ -65,7 +65,7 @@ export class Queue<T> {
   }
 }
 
-export class Heap<T> {
+export class MinHeap<T> {
   private heap: {
     order: number;
     value: T;
@@ -174,7 +174,7 @@ export class Heap<T> {
 export class RateLimiter {
   private requests: Map<string, Queue<number>>;
   private inactiveAfterMs = 30_000;
-  private requestsLog: Heap<{
+  private requestsLog: MinHeap<{
     userId: string;
     timestamp: number;
   }>;
@@ -184,7 +184,7 @@ export class RateLimiter {
     private windowMs: number,
   ) {
     this.requests = new Map();
-    this.requestsLog = new Heap();
+    this.requestsLog = new MinHeap();
   }
 
   private processRequestWindow(timestamp: number, queue: Queue<number>) {
