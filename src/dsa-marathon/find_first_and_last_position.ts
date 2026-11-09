@@ -54,6 +54,11 @@ test("ensure find first and last is calculated correctly", () => {
       target: 7,
       expectedResult: [1, 2],
     },
+    {
+      nums: [1, 1, 1],
+      target: 1,
+      expectedResult: [0, 2],
+    },
   ].forEach(({ nums, target, expectedResult }) => {
     assert.deepEqual(findFirstAndLast(nums, target), expectedResult);
   });
