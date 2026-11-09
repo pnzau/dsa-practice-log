@@ -3,17 +3,18 @@ import assert from "node:assert/strict";
 
 function lengthOfLongestSubstring(s: string): number {
   const seen: Set<string> = new Set();
+  let left = 0;
   let longestSubstring = 0;
 
-  for (let i = 0; i < s.length; i++) {
-    const char = s[i];
-    while (seen.has(char!)) {
-      const [firstItem] = seen;
-      seen.delete(firstItem!);
+  for (let right = 0; right < s.length; right++) {
+    const char = s[right]!;
+    while (seen.has(char)) {
+      seen.delete(s[left]!);
+      left++;
     }
 
-    seen.add(char!);
-    longestSubstring = Math.max(longestSubstring, seen.size);
+    seen.add(char);
+    longestSubstring = Math.max(longestSubstring, right - left + 1);
   }
   return longestSubstring;
 }
