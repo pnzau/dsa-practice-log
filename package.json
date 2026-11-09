@@ -6,6 +6,7 @@
   "scripts": {
     "dsa": "node --import tsx scripts/run-dsa.ts",
     "dsa:all": "node --import tsx scripts/run-dsa.ts --all",
+    "dsa:marathon": "node --import tsx scripts/run-dsa.ts --marathon",
     "test": "npm run dsa:all",
     "typecheck": "tsc --noEmit"
   },

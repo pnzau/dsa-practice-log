@@ -29,3 +29,17 @@ npm run typecheck
 ```
 
 The starting challenge for October 8, 2026 is [`src/dsa/rate_limiter.ts`](src/dsa/rate_limiter.ts).
+
+## DSA marathon
+
+Add marathon challenge files under `src/dsa-marathon` and run them all:
+
+```sh
+npm run dsa:marathon
+```
+
+Run one marathon challenge by filename stem:
+
+```sh
+npm run dsa:marathon -- <challenge-name>
+```

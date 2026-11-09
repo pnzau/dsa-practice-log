@@ -2,13 +2,27 @@ import { readdirSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
-const dsaDirectory = resolve("src/dsa");
-const requestedChallenge = process.argv[2];
+const runnerArguments = process.argv.slice(2);
+const isMarathon = runnerArguments.includes("--marathon");
+const hasChallengeName = runnerArguments.some(
+  (argument) => !argument.startsWith("--"),
+);
+const runAll =
+  runnerArguments.includes("--all") || (isMarathon && !hasChallengeName);
+const requestedChallenge = runnerArguments.find(
+  (argument) => !argument.startsWith("--"),
+);
+const dsaDirectory = resolve(isMarathon ? "src/dsa-marathon" : "src/dsa");
 
 function printSampleCommands(): void {
-  console.error("Usage: npm run dsa -- <challenge-name>");
-  console.error("       npm run dsa -- rate_limiter");
-  console.error("       npm run dsa:all");
+  if (isMarathon) {
+    console.error("Usage: npm run dsa:marathon");
+    console.error("       npm run dsa:marathon -- <challenge-name>");
+  } else {
+    console.error("Usage: npm run dsa -- <challenge-name>");
+    console.error("       npm run dsa -- rate_limiter");
+    console.error("       npm run dsa:all");
+  }
 }
 
 function challengePath(challengeName: string): string {
@@ -22,7 +36,7 @@ function challengePath(challengeName: string): string {
 }
 
 const challengePaths =
-  requestedChallenge === "--all"
+  runAll
     ? readdirSync(dsaDirectory)
         .filter((fileName) => fileName.endsWith(".ts"))
         .sort()
@@ -32,7 +46,11 @@ const challengePaths =
       : [];
 
 if (challengePaths.length === 0) {
-  printSampleCommands();
+  if (runAll) {
+    console.error(`No TypeScript challenges found in ${dsaDirectory}.`);
+  } else {
+    printSampleCommands();
+  }
   process.exitCode = 1;
 } else if (challengePaths.some((filePath) => !existsSync(filePath))) {
   const missingPath = challengePaths.find((filePath) => !existsSync(filePath));
