@@ -3,7 +3,7 @@ import assert from "node:assert";
 
 // nums has to be a sortedArray
 function findFirstAndLast(nums: number[], target: number): number[] {
-  const findBoundary = (findFirst = false) => {
+  const findBoundary = (findFirst: boolean) => {
     let left = 0;
     let right = nums.length - 1;
     let position = -1;
@@ -29,7 +29,7 @@ function findFirstAndLast(nums: number[], target: number): number[] {
     return position;
   };
 
-  return [findBoundary(true), findBoundary()];
+  return [findBoundary(true), findBoundary(false)];
 }
 
 test("ensure find first and last is calculated correctly", () => {
