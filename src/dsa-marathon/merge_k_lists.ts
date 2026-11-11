@@ -66,16 +66,18 @@ const mergeTwoLists = (
   return dummy.next;
 };
 
-function mergeKLists(list: Array<LinkedNode | null>): LinkedNode | null {
+function mergeKLists(lists: Array<LinkedNode | null>): LinkedNode | null {
   let interval = 1;
-  while (interval < list.length) {
-    for (let i = 0; i + interval < list.length; i += interval * 2) {
-      list[i] = mergeTwoLists(list[i]!, list[i + interval]!);
+  while (interval < lists.length) {
+    for (let i = 0; i + interval < lists.length; i += interval * 2) {
+      const listA = lists[i] ?? null;
+      const listB = lists[i + interval] ?? null;
+      lists[i] = mergeTwoLists(listA, listB);
     }
     interval = interval * 2;
   }
 
-  return list[0] ?? null;
+  return lists[0] ?? null;
 }
 
 test("ensure mergeKLists returns the right results", () => {
